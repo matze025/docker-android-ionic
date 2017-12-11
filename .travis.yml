@@ -1,0 +1,21 @@
+sudo: required
+
+language: bash
+
+services:
+  - docker
+
+script:
+  - docker build -t matze025/android-ionic:latest -t matze025/android-ionic:1.0.$TRAVIS_BUILD_NUMBER . > log.txt
+
+after_failure:
+  - tail log.txt
+
+after_success:
+  - 'echo "On Branch: $TRAVIS_BRANCH"'
+  - if [[ $TRAVIS_BRANCH == "master" ]]; then
+    echo "pushing to hub";
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push matze025/android-ionic:1.0.$TRAVIS_BUILD_NUMBER;
+    docker push matze025/android-ionic:latest;
+    fi
