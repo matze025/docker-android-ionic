@@ -6,13 +6,13 @@ An Docker image for building Android and Ionic.
 With the follwing command you can serve an IonicApp in the current directory.
 Replace serve with the ionic command you like for other usages.
 ```bash
-docker run -it --rm -p 8100:8100 -p 35729:35729 --privileged -v ~/.gradle:/root/.gradle -v \$PWD:/workdir:rw matze025/android-ionic ionic serve
+docker run -it --rm -p 8100:8100 -p 35729:35729 --privileged -v ~/.gradle:/root/.gradle -v $PWD:/workdir:rw matze025/android-ionic ionic serve
 ```
 
 ## Building Android 
 With the follwing command you build am Android-App in the current directory.
 ```bash
-docker run -it --rm -p 8100:8100 -p 35729:35729 --privileged -v ~/.gradle:/root/.gradle -v \$PWD:/workdir:rw matze025/android-ionic ./gradlew assembleRelease
+docker run -it --rm -p 8100:8100 -p 35729:35729 --privileged -v ~/.gradle:/root/.gradle -v $PWD:/workdir:rw matze025/android-ionic ./gradlew assembleRelease
 ```
 
 ## Use npm and ionic with a bash alias
