@@ -1,11 +1,13 @@
-FROM     ubuntu:16.04
+FROM     ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     ANDROID_HOME=/opt/android-sdk \
     NODE_VERSION=8.9.1 \
     NPM_VERSION=5.5.1 \
     IONIC_VERSION=3.18.0 \
-    CORDOVA_VERSION=7.1.0
+    CORDOVA_VERSION=7.1.0 \
+    GRADLE_VERSION=3.3
+
 
 # Install basics
 RUN apt-get update &&  \
@@ -22,10 +24,7 @@ RUN ionic config set -g backend legacy
 
 #ANDROID 
 #JAVA
-RUN apt-get update && apt-get install -y -q python-software-properties software-properties-common  && \
-    add-apt-repository ppa:webupd8team/java -y && \
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get update && apt-get -y install oracle-java8-installer
+RUN apt-get update && apt-get install -y openjdk-8-jdk openjdk-8-doc openjdk-8-jre-headless openjdk-8-source 
 
 #ANDROID STUFF
 RUN echo ANDROID_HOME="${ANDROID_HOME}" >> /etc/environment && \
@@ -54,10 +53,6 @@ RUN yes | /opt/android-sdk/tools/bin/sdkmanager \
     "platforms;android-24" \
     "platforms;android-23" \
     "platforms;android-22" \
-    "platforms;android-21" \
-    "platforms;android-19" \
-    "platforms;android-17" \
-    "platforms;android-15" \
     "build-tools;27.0.1" \
     "build-tools;27.0.0" \
     "build-tools;26.0.2" \
@@ -66,21 +61,30 @@ RUN yes | /opt/android-sdk/tools/bin/sdkmanager \
     "build-tools;24.0.3" \
     "build-tools;23.0.3" \
     "build-tools;22.0.1" \
-    "build-tools;21.1.2" \
-    "build-tools;19.1.0" \
-    "build-tools;17.0.0" \
     "extras;android;m2repository" \
     "extras;google;m2repository" \
     "extras;google;google_play_services" \
     "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
     "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1" \
     "add-ons;addon-google_apis-google-23" \
-    "add-ons;addon-google_apis-google-22" \
-    "add-ons;addon-google_apis-google-21"
+    "add-ons;addon-google_apis-google-22" 
+    
+    
+# install gradle
+RUN cd /opt && \
+    rm -rf gradle && \
+    mkdir /opt/gradle && \
+    cd /opt/gradle && \
+    curl --retry 3 -SLO "https://downloads.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
+    unzip -d /opt/gradle gradle-${GRADLE_VERSION}-bin.zip && \
+    rm -f gradle-${GRADLE_VERSION}-bin.zip
+
 
 # Setup environment
 
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:/opt/gradle/gradle-${GRADLE_VERSION}/bin
+ENV GRADLE_HOME=/opt/gradle/gradle-${GRADLE_VERSION}/libexec/
+
 
 RUN mkdir -p /workdir
 
