@@ -2,10 +2,10 @@ FROM     ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     ANDROID_HOME=/opt/android-sdk \
-    NODE_VERSION=8.9.1 \
-    NPM_VERSION=5.5.1 \
-    IONIC_VERSION=3.18.0 \
-    CORDOVA_VERSION=7.1.0 \
+    NODE_VERSION=9.4.0 \
+    NPM_VERSION=5.6.0 \
+    IONIC_VERSION=4.10.2 \
+    CORDOVA_VERSION=8.1.2 \
     GRADLE_VERSION=3.3
 
 
