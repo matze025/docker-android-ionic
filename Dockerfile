@@ -47,12 +47,14 @@ RUN mkdir -p /opt/android-sdk && \
 RUN yes | /opt/android-sdk/tools/bin/sdkmanager --licenses
 RUN /opt/android-sdk/tools/bin/sdkmanager "tools" "platform-tools"
 RUN yes | /opt/android-sdk/tools/bin/sdkmanager \
+    "platforms;android-29" \
     "platforms;android-27" \
     "platforms;android-26" \
     "platforms;android-25" \
     "platforms;android-24" \
     "platforms;android-23" \
     "platforms;android-22" \
+    "build-tools;29.0.3" \
     "build-tools;27.0.1" \
     "build-tools;27.0.0" \
     "build-tools;26.0.2" \
